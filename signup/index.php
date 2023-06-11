@@ -1,3 +1,39 @@
+<?php
+
+include_once $_SERVER['DOCUMENT_ROOT'].'/__lib/main.php';
+
+if(isset($_POST['name']) and
+isset($_POST['username']) and
+isset($_POST['age']) and
+isset($_POST['gender']) and
+isset($_POST['dob']) and
+isset($_POST['email']) and
+isset($_POST['phone']) and
+isset($_POST['password'])
+     )
+{
+    $name = $_POST['name'];
+    $username = $_POST['username'];
+    $age = $_POST['age'];
+    $gender = $_POST['gender'];
+    $dob = $_POST['dob'];
+    $email = $_POST['email'];
+    $phone = $_POST['phone'];
+    $password = $_POST['password'];
+    $regid = rand(0000,9999);
+
+    $result = user::signup($name, $username, $age, $gender, $dob, $email, $phone, $password, $regid);
+
+    if($result)
+    {
+        ?><script>alert('You have been successfully signed up!')</script><?
+    }
+    else{
+        ?><script>alert('Signup failed! Please try again!')</script><?
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -40,11 +76,26 @@
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="text" class="form-control form-control-user" id="exampleFirstName"
-                                            placeholder="First Name">
+                                            placeholder="Name">
                                     </div>
                                     <div class="col-sm-6">
                                         <input type="text" class="form-control form-control-user" id="exampleLastName"
-                                            placeholder="Last Name">
+                                            placeholder="Username">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="text" class="form-control form-control-user" id="exampleFirstName"
+                                            placeholder="Age">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <select type="text" class="form-control form-control-user" id="exampleLastName"
+                                            placeholder="Gender">
+                                            <option disabled selected>Select Gender</option>
+                                                <option>Male</option>
+                                                <option>Female</option>
+                                                <option>Prefer not to say</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -61,23 +112,16 @@
                                             id="exampleRepeatPassword" placeholder="Repeat Password">
                                     </div>
                                 </div>
-                                <a href="login.html" class="btn btn-primary btn-user btn-block">
+                                <button type="submit" class="btn btn-primary btn-user btn-block">
                                     Register Account
-                                </a>
-                                <hr>
-                                <a href="index.html" class="btn btn-google btn-user btn-block">
-                                    <i class="fab fa-google fa-fw"></i> Register with Google
-                                </a>
-                                <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                                    <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
-                                </a>
+                                </button>
                             </form>
                             <hr>
                             <div class="text-center">
-                                <a class="small" href="forgot-password.html">Forgot Password?</a>
+                                <a class="small" href="/forgot-password">Forgot Password?</a>
                             </div>
                             <div class="text-center">
-                                <a class="small" href="login.html">Already have an account? Login!</a>
+                                <a class="small" href="/login">Already have an account? Login!</a>
                             </div>
                         </div>
                     </div>

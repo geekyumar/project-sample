@@ -1,6 +1,6 @@
 <?php
 
-include $_SERVER['DOCUMENT_ROOT'].'/__lib/main.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/__lib/main.php';
 
 class database
 {
