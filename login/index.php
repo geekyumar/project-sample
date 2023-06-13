@@ -7,7 +7,7 @@ if(isset($_POST['username']) and $_POST['password'])
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $result = user::login($username, $password);
+    $result = usersession::authenticate($username, $password);
 
     if($result)
     {
@@ -64,7 +64,7 @@ if(isset($_POST['username']) and $_POST['password'])
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                     </div>
-                                    <form method="post" id="loginform" class="user" action="index.php">
+                                    <form method="post" id="loginform" class="user">
                                         <div class="form-group">
                                             <input type="text" name="username" class="form-control form-control-user"
                                                 id="exampleInputEmail" aria-describedby="emailHelp"

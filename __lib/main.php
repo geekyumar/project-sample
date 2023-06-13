@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 include_once $_SERVER['DOCUMENT_ROOT'].'/classes/database.class.php';
 include_once $_SERVER['DOCUMENT_ROOT'].'/classes/user.class.php';
 include_once $_SERVER['DOCUMENT_ROOT'].'/classes/session.class.php';

@@ -4,7 +4,6 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/__lib/main.php';
 if(session::get('session_token'))
 {
 
-
 ?>
 <!DOCTYPE html>
 
@@ -19,7 +18,7 @@ if(session::get('session_token'))
 
 <body>
 
-<meta http-equiv="refresh" content="3;url=/student/dashboard/" />
+<meta http-equiv="refresh" content="3;url=/dashboard" />
 
 <div class="loader">
 </div>

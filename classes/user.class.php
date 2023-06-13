@@ -3,14 +3,16 @@
 class user
 {
 
-    public static function signup($name, $username, $age, $gender, $dob, $email, $phone, $password, $regid)
+    public static function signup($name, $username, $age, $gender, $dob, $email, $phone, $pass, $regid)
     {
+        $password = password_hash($pass, PASSWORD_BCRYPT);
+        
         $conn = database::getConnection();
 
         $sql1 = "SET @@session.time_zone = '+05:30'";
 
         $sql2 = "INSERT INTO `users` (`name`,`username`, `age`, `gender`, `dob`, `email`,`phone`,`reg_id`)
-    VALUES ('$name','$username', '$age','$gender','$dob','$email', $phone, '$regid'";
+    VALUES ('$name','$username', '$age','$gender','$dob','$email', '$phone', '$regid')";
 
        
 
@@ -56,7 +58,6 @@ class user
             $row = $result->fetch_assoc();
             $pass_verify = password_verify($password, $row['password']);
             if ($pass_verify === true) {
-                return $row;
                 return true;
             } else {
                 die("Error 401: Invalid Credentials");

@@ -12,6 +12,7 @@ isset($_POST['phone']) and
 isset($_POST['password'])
      )
 {
+
     $name = $_POST['name'];
     $username = $_POST['username'];
     $age = $_POST['age'];
@@ -72,44 +73,48 @@ isset($_POST['password'])
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                             </div>
-                            <form class="user">
+                            <form class="user" method="post">
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="text" class="form-control form-control-user" id="exampleFirstName"
+                                        <input type="text" name="name" class="form-control form-control-user" id="exampleFirstName"
                                             placeholder="Name">
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control form-control-user" id="exampleLastName"
+                                        <input type="text"  name="username" class="form-control form-control-user" id="exampleLastName"
                                             placeholder="Username">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="text" class="form-control form-control-user" id="exampleFirstName"
+                                        <input type="number"  name="age" class="form-control form-control-user" id="exampleFirstName"
                                             placeholder="Age">
                                     </div>
                                     <div class="col-sm-6">
-                                        <select type="text" class="form-control form-control-user" id="exampleLastName"
+                                        <select type="text" name="gender" class="form-control form-control-user" id="exampleLastName"
                                             placeholder="Gender">
                                             <option disabled selected>Select Gender</option>
-                                                <option>Male</option>
-                                                <option>Female</option>
-                                                <option>Prefer not to say</option>
+                                                <option value="male">Male</option>
+                                                <option value="female">Female</option>
+                                                <option value="not-to-say">Prefer not to say</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="email" class="form-control form-control-user" id="exampleInputEmail"
+                                    <input type="date" name="dob" class="form-control form-control-user" id="exampleInputEmail"
+                                        placeholder="Date of Birth">
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" name="email" class="form-control form-control-user" id="exampleInputEmail"
                                         placeholder="Email Address">
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="password" class="form-control form-control-user"
-                                            id="exampleInputPassword" placeholder="Password">
+                                        <input type="number" name="phone"  class="form-control form-control-user"
+                                            id="exampleInputPassword" placeholder="Phone">
                                     </div>
-                                    <div class="col-sm-6">
-                                        <input type="password" class="form-control form-control-user"
-                                            id="exampleRepeatPassword" placeholder="Repeat Password">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="password" name="password"  class="form-control form-control-user"
+                                            id="exampleInputPassword" placeholder="Password">
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-user btn-block">
