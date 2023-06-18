@@ -18,6 +18,11 @@ if(isset($_POST['username']) and $_POST['password'])
     }
 }
 
+if(session::get('session_token'))
+{
+    header('Location: /load_dashboard');
+}
+
 ?>
 
 

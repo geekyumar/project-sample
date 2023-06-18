@@ -126,6 +126,28 @@ class user
         }
     }
 
+    public function update_profile($name, $username, $age, $gender, $dob, $email, $phone)
+    {
+        if(!$conn)
+        {
+            $conn = database::getConnection();
+        }
+        $sql = "UPDATE `users` SET
+         `name` = '$name',`username` = '$username',`age` = '$age', `gender` = '$gender',`dob` = '$dob', `email` = '$email', `phone` = '$phone'
+          WHERE `id` = '$this->id'";
+        
+        $result = $conn->query($sql);
+        if($result == true)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
 
 }
 

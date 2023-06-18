@@ -1,6 +1,51 @@
 <?php
 
 include $_SERVER['DOCUMENT_ROOT'].'/__lib/main.php';
+if (session::get('session_token'))
+{
+    $session_token = session::get('session_token');
+    $user_id = session::get('user_id');
+    $auth = usersession::authorize($session_token);
+    $userobj = new user($user_id);
+}
+else
+{
+    header('Location: /login');
+}
+
+if(isset($_GET['logout']))
+{
+    session_destroy();
+    header('Location: /signout');
+}
+
+if(isset($_POST['name']) and 
+isset($_POST['username']) and
+isset($_POST['age']) and
+isset($_POST['gender']) and
+isset($_POST['dob']) and
+isset($_POST['email']) and
+isset($_POST['phone'])
+)
+{
+    $name = $_POST['name'];
+    $username = $_POST['username'];
+    $age = $_POST['age'];
+    $gender = $_POST['gender'];
+    $dob = $_POST['dob'];
+    $email = $_POST['email'];
+    $phone = $_POST['phone'];
+
+    $update = $userobj->update_profile($name, $username, $age, $gender, $dob, $email, $phone);
+
+    if($update)
+    {
+        ?><script>alert('Profile updation success!')</script><?
+    }
+    else{
+        ?><script>alert('Profile updation failed. please try again.')</script><?
+    }
+}
 
 ?>
 
@@ -33,7 +78,144 @@ include $_SERVER['DOCUMENT_ROOT'].'/__lib/main.php';
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-       <?load_template('header')?>
+        <!-- Sidebar -->
+  <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+<!-- Sidebar - Brand -->
+<a class="sidebar-brand d-flex align-items-center justify-content-center" href="/dashboard">
+
+    <div class="sidebar-brand-text mx-3">Dashboard<sup></sup></div>
+</a>
+
+<!-- Divider -->
+<hr class="sidebar-divider my-0">
+
+<!-- Nav Item - Dashboard -->
+<li class="nav-item">
+    <a class="nav-link" href="/dashboard">
+        <i class="fas fa-fw fa-tachometer-alt"></i>
+        <span>Dashboard</span></a>
+</li>
+
+<!-- Divider -->
+<hr class="sidebar-divider">
+
+<!-- Heading -->
+<div class="sidebar-heading">
+    Interface
+</div>
+
+<!-- Nav Item - Pages Collapse Menu -->
+<li class="nav-item">
+    <a class="nav-link" href="/profile">
+        <i class="fas fa-fw fa-cog"></i>
+        <span>Profile</span>
+    </a>
+</li>
+
+
+
+</ul>
+<!-- End of Sidebar -->
+
+<!-- Content Wrapper -->
+<div id="content-wrapper" class="d-flex flex-column">
+
+<!-- Main Content -->
+<div id="content">
+
+    <!-- Topbar -->
+    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+        <!-- Sidebar Toggle (Topbar) -->
+        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+        </button>
+
+
+
+        <!-- Topbar Navbar -->
+        <ul class="navbar-nav ml-auto">
+
+            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+
+            <!-- Nav Item - Alerts -->
+
+            <!-- Nav Item - Messages -->
+            <li class="nav-item dropdown no-arrow mx-1">
+                <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-envelope fa-fw"></i>
+                    <!-- Counter - Messages -->
+                    <span class="badge badge-danger badge-counter">1</span>
+                </a>
+                <!-- Dropdown - Messages -->
+                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                    aria-labelledby="messagesDropdown">
+                    <h6 class="dropdown-header">
+                        Message Center
+                    </h6>
+                    <a class="dropdown-item d-flex align-items-center" href="#">
+                        <div class="font-weight-bold">
+                            <div class="text-truncate">Hi there, Welcome!</div>
+                            <div class="small text-gray-500">Umar Farooq</div>
+                        </div>
+                    </a>
+
+            </li>
+
+            <div class="topbar-divider d-none d-sm-block"></div>
+
+            <!-- Nav Item - User Information -->
+            <li class="nav-item dropdown no-arrow">
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?echo $userobj->name?></span>
+
+                </a>
+                <!-- Dropdown - User Information -->
+                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                    aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="/dashboard">
+                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Dashboard
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/profile">
+                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Profile
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="?logout" data-toggle="modal" data-target="#logoutModal">
+                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Logout
+                    </a>
+                </div>
+            </li>
+
+        </ul>
+
+    </nav>
+    <!-- End of Topbar -->
+        <!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            <a class="btn btn-primary" href="?logout">Logout</a>
+        </div>
+    </div>
+</div>
+</div>
 
                 <!-- Begin Page Content -->
 
@@ -46,60 +228,61 @@ include $_SERVER['DOCUMENT_ROOT'].'/__lib/main.php';
             <h6 class="m-0 font-weight-bold text-primary">My Profile</h6>
         </div>
         <!-- Card Body -->
+        <form method="post">
         <div class="form-group m-4">
         <h4 class="text-primary">Name</h4>
-            <input type="email" class="form-control form-control-user"
+            <input type="text" name="name" value="<?echo $userobj->name?>" class="form-control form-control-user"
              id="exampleInputEmail" aria-describedby="emailHelp"
             placeholder="Enter Email Address...">
     </div>
 
     <div class="form-group m-4">
         <h4 class="text-primary">Username</h4>
-            <input type="email" class="form-control form-control-user"
+            <input type="text" name="username" value="<?echo $userobj->username?>" class="form-control form-control-user"
              id="exampleInputEmail" aria-describedby="emailHelp"
             placeholder="Enter Email Address...">
     </div>
       
     <div class="form-group m-4">
         <h4 class="text-primary">Age</h4>
-            <input type="email" class="form-control form-control-user"
+            <input type="number" name="age" value="<?echo $userobj->age?>" class="form-control form-control-user"
              id="exampleInputEmail" aria-describedby="emailHelp"
             placeholder="Enter Email Address...">
     </div>
     <div class="form-group m-4">
         <h4 class="text-primary">Gender</h4>
-            <input type="email" class="form-control form-control-user"
+            <input type="text" name="gender" value="<?echo $userobj->gender?>" class="form-control form-control-user"
              id="exampleInputEmail" aria-describedby="emailHelp"
             placeholder="Enter Email Address...">
     </div>
     <div class="form-group m-4">
         <h4 class="text-primary">Date of Birth</h4>
-            <input type="email" class="form-control form-control-user"
+            <input type="date" name="dob" value="<?echo $userobj->dob?>" class="form-control form-control-user"
              id="exampleInputEmail" aria-describedby="emailHelp"
             placeholder="Enter Email Address...">
     </div>
     <div class="form-group m-4">
         <h4 class="text-primary">Email</h4>
-            <input type="email" class="form-control form-control-user"
+            <input type="email" name="email" value="<?echo $userobj->email?>" class="form-control form-control-user"
              id="exampleInputEmail" aria-describedby="emailHelp"
             placeholder="Enter Email Address...">
     </div>
     <div class="form-group m-4">
         <h4 class="text-primary">Phone</h4>
-            <input type="email" class="form-control form-control-user"
+            <input type="number" name="phone" value="<?echo $userobj->phone?>" class="form-control form-control-user"
              id="exampleInputEmail" aria-describedby="emailHelp"
             placeholder="Enter Email Address...">
     </div>
     <div class="form-group m-4">
         <h4 class="text-primary">Reg. ID</h4>
-            <input type="email" class="form-control form-control-user"
+            <input disabled type="number" name="regid" value="<?echo $userobj->reg_id?>" class="form-control form-control-user"
              id="exampleInputEmail" aria-describedby="emailHelp"
             placeholder="Enter Email Address...">
             
     </div>
 
     <div class="form-group m-4">
-    <a class=" text-center col-lg-4 btn btn-primary" href="?logout">Submit Changes</a>
+    <button type="submit" class="text-center col-lg-4 btn btn-primary">Submit Changes</button>
     </div>
         
         </div>

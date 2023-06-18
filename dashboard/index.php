@@ -2,12 +2,32 @@
 
 include $_SERVER['DOCUMENT_ROOT'].'/__lib/main.php';
 
+if (session::get('session_token'))
+{
+    $session_token = session::get('session_token');
+    $user_id = session::get('user_id');
+    $auth = usersession::authorize($session_token);
+    $userobj = new user($user_id);
+}
+else
+{
+    header('Location: /login');
+}
+
+if(isset($_GET['logout']))
+{
+    session_destroy();
+    header('Location: /signout');
+}
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+
+
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -33,7 +53,144 @@ include $_SERVER['DOCUMENT_ROOT'].'/__lib/main.php';
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-    <?load_template('header')?>
+     <!-- Sidebar -->
+  <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+<!-- Sidebar - Brand -->
+<a class="sidebar-brand d-flex align-items-center justify-content-center" href="/dashboard">
+
+    <div class="sidebar-brand-text mx-3">Dashboard<sup></sup></div>
+</a>
+
+<!-- Divider -->
+<hr class="sidebar-divider my-0">
+
+<!-- Nav Item - Dashboard -->
+<li class="nav-item">
+    <a class="nav-link" href="/dashboard">
+        <i class="fas fa-fw fa-tachometer-alt"></i>
+        <span>Dashboard</span></a>
+</li>
+
+<!-- Divider -->
+<hr class="sidebar-divider">
+
+<!-- Heading -->
+<div class="sidebar-heading">
+    Interface
+</div>
+
+<!-- Nav Item - Pages Collapse Menu -->
+<li class="nav-item">
+    <a class="nav-link" href="/profile">
+        <i class="fas fa-fw fa-cog"></i>
+        <span>Profile</span>
+    </a>
+</li>
+
+
+
+</ul>
+<!-- End of Sidebar -->
+
+<!-- Content Wrapper -->
+<div id="content-wrapper" class="d-flex flex-column">
+
+<!-- Main Content -->
+<div id="content">
+
+    <!-- Topbar -->
+    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+        <!-- Sidebar Toggle (Topbar) -->
+        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+        </button>
+
+
+
+        <!-- Topbar Navbar -->
+        <ul class="navbar-nav ml-auto">
+
+            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+
+            <!-- Nav Item - Alerts -->
+
+            <!-- Nav Item - Messages -->
+            <li class="nav-item dropdown no-arrow mx-1">
+                <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-envelope fa-fw"></i>
+                    <!-- Counter - Messages -->
+                    <span class="badge badge-danger badge-counter">1</span>
+                </a>
+                <!-- Dropdown - Messages -->
+                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                    aria-labelledby="messagesDropdown">
+                    <h6 class="dropdown-header">
+                        Message Center
+                    </h6>
+                    <a class="dropdown-item d-flex align-items-center" href="#">
+                        <div class="font-weight-bold">
+                            <div class="text-truncate">Hi there, Welcome!</div>
+                            <div class="small text-gray-500">Umar Farooq</div>
+                        </div>
+                    </a>
+
+            </li>
+
+            <div class="topbar-divider d-none d-sm-block"></div>
+
+            <!-- Nav Item - User Information -->
+            <li class="nav-item dropdown no-arrow">
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?echo $userobj->name?></span>
+
+                </a>
+                <!-- Dropdown - User Information -->
+                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                    aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="/dashboard">
+                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Dashboard
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/profile">
+                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Profile
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="?logout" data-toggle="modal" data-target="#logoutModal">
+                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Logout
+                    </a>
+                </div>
+            </li>
+
+        </ul>
+
+    </nav>
+    <!-- End of Topbar -->
+        <!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            <a class="btn btn-primary" href="?logout">Logout</a>
+        </div>
+    </div>
+</div>
+</div>
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
@@ -49,7 +206,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/__lib/main.php';
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                No. of People Signed up</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">12</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?echo user::no_of_users()?></div>
                                         </div>
                                         <div class="col-auto">
                                     
@@ -73,14 +230,14 @@ include $_SERVER['DOCUMENT_ROOT'].'/__lib/main.php';
                                     <h6 class="m-0 font-weight-bold text-primary">Your Personal Information</h6>
                                 </div>
                                 <!-- Card Body -->
-                                <h4 class="m-4 font-weight-bold text-primary">Name: </h4>
-                                <h4 class="m-4 font-weight-bold text-primary">Userame: </h4>
-                                <h4 class="m-4 font-weight-bold text-primary">Age: </h4>
-                                <h4 class="m-4 font-weight-bold text-primary">Gender: </h4>
-                                <h4 class="m-4 font-weight-bold text-primary">Date of Birth: </h4>
-                                <h4 class="m-4 font-weight-bold text-primary">Email: </h4>
-                                <h4 class="m-4 font-weight-bold text-primary">Phone: </h4>
-                                <h4 class="m-4 font-weight-bold text-primary">Reg.ID: </h4>
+                                <h4 class="m-4 font-weight-bold text-primary">Name: <?echo $userobj->name?></h4> 
+                                <h4 class="m-4 font-weight-bold text-primary">Userame: <?echo $userobj->username?></h4>
+                                <h4 class="m-4 font-weight-bold text-primary">Age: <?echo $userobj->age?></h4>
+                                <h4 class="m-4 font-weight-bold text-primary">Gender: <?echo $userobj->gender?></h4>
+                                <h4 class="m-4 font-weight-bold text-primary">Date of Birth: <?echo $userobj->dob?></h4>
+                                <h4 class="m-4 font-weight-bold text-primary">Email: <?echo $userobj->email?></h4>
+                                <h4 class="m-4 font-weight-bold text-primary">Phone: <?echo $userobj->phone?></h4>
+                                <h4 class="m-4 font-weight-bold text-primary">Reg.ID: <?echo $userobj->reg_id?></h4>
                                 
                                 </div>
                             </div>
