@@ -33,6 +33,11 @@ isset($_POST['password'])
         ?><script>alert('Signup failed! Please try again!')</script><?
     }
 }
+
+if(session::get('session_token'))
+{
+    header('Location: /load_dashboard');
+}
 ?>
 
 <!DOCTYPE html>
@@ -67,7 +72,9 @@ isset($_POST['password'])
             <div class="card-body p-0">
                 <!-- Nested Row within Card Body -->
                 <div class="row">
-                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div style="width:100%;"class="col-lg-5 d-none d-lg-block">
+                        <img src="/img/signup.svg" alt="signup" />
+                    </div>
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
@@ -122,9 +129,7 @@ isset($_POST['password'])
                                 </button>
                             </form>
                             <hr>
-                            <div class="text-center">
-                                <a class="small" href="/forgot-password">Forgot Password?</a>
-                            </div>
+
                             <div class="text-center">
                                 <a class="small" href="/login">Already have an account? Login!</a>
                             </div>

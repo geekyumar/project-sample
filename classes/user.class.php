@@ -133,7 +133,13 @@ class user
             $conn = database::getConnection();
         }
         $sql = "UPDATE `users` SET
-         `name` = '$name',`username` = '$username',`age` = '$age', `gender` = '$gender',`dob` = '$dob', `email` = '$email', `phone` = '$phone'
+         `name` = '$name',
+         `username` = '$username',
+         `age` = '$age',
+          `gender` = '$gender',
+          `dob` = '$dob',
+           `email` = '$email',
+            `phone` = '$phone'
           WHERE `id` = '$this->id'";
         
         $result = $conn->query($sql);
