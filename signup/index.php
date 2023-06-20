@@ -134,7 +134,7 @@ if(session::get('session_token'))
 
     $.ajax({
       type: 'POST',
-      url: 'https://project-sample.umarfarooq.online/api/signup.api.php',
+      url: 'https://projectsample.umarfarooq.online/api/signup.api.php',
       dataType: 'json',
       data: dataToSend,
       
