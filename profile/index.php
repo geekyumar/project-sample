@@ -113,6 +113,13 @@ isset($_POST['phone'])
     </a>
 </li>
 
+<li class="nav-item">
+    <a class="nav-link" href="/change_password">
+        <i class="fas fa-fw fa-cog"></i>
+        <span>Change Password</span>
+    </a>
+</li>
+
 
 
 </ul>
@@ -186,6 +193,11 @@ isset($_POST['phone'])
                         Profile
                     </a>
                     <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/change_password">
+                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Change Password
+                    </a>
+                    <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="?logout" data-toggle="modal" data-target="#logoutModal">
                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                         Logout
@@ -233,33 +245,33 @@ aria-hidden="true">
         <h4 class="text-primary">Name</h4>
             <input type="text" name="name" value="<?echo $userobj->name?>" class="form-control form-control-user"
              id="exampleInputEmail" aria-describedby="emailHelp"
-            placeholder="Enter Email Address...">
+            placeholder="Enter Name...">
     </div>
 
     <div class="form-group m-4">
         <h4 class="text-primary">Username</h4>
             <input type="text" name="username" value="<?echo $userobj->username?>" class="form-control form-control-user"
              id="exampleInputEmail" aria-describedby="emailHelp"
-            placeholder="Enter Email Address...">
+            placeholder="Enter Username...">
     </div>
       
     <div class="form-group m-4">
         <h4 class="text-primary">Age</h4>
             <input type="number" name="age" value="<?echo $userobj->age?>" class="form-control form-control-user"
              id="exampleInputEmail" aria-describedby="emailHelp"
-            placeholder="Enter Email Address...">
+            placeholder="Enter Age...">
     </div>
     <div class="form-group m-4">
         <h4 class="text-primary">Gender</h4>
             <input type="text" name="gender" value="<?echo $userobj->gender?>" class="form-control form-control-user"
              id="exampleInputEmail" aria-describedby="emailHelp"
-            placeholder="Enter Email Address...">
+            placeholder="Enter Gender...">
     </div>
     <div class="form-group m-4">
         <h4 class="text-primary">Date of Birth</h4>
             <input type="date" name="dob" value="<?echo $userobj->dob?>" class="form-control form-control-user"
              id="exampleInputEmail" aria-describedby="emailHelp"
-            placeholder="Enter Email Address...">
+            placeholder="Enter DOB...">
     </div>
     <div class="form-group m-4">
         <h4 class="text-primary">Email</h4>
@@ -271,13 +283,13 @@ aria-hidden="true">
         <h4 class="text-primary">Phone</h4>
             <input type="number" name="phone" value="<?echo $userobj->phone?>" class="form-control form-control-user"
              id="exampleInputEmail" aria-describedby="emailHelp"
-            placeholder="Enter Email Address...">
+            placeholder="Enter Phone...">
     </div>
     <div class="form-group m-4">
         <h4 class="text-primary">Reg. ID</h4>
             <input disabled type="number" name="regid" value="<?echo $userobj->reg_id?>" class="form-control form-control-user"
              id="exampleInputEmail" aria-describedby="emailHelp"
-            placeholder="Enter Email Address...">
+            placeholder="Enter Reg ID...">
             
     </div>
 

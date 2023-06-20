@@ -1,7 +1,6 @@
 <?php
 
 include $_SERVER['DOCUMENT_ROOT'].'/__lib/main.php';
-
 if (session::get('session_token'))
 {
     $session_token = session::get('session_token');
@@ -20,6 +19,56 @@ if(isset($_GET['logout']))
     header('Location: /signout');
 }
 
+if(isset($_POST['old']) and 
+isset($_POST['new']) and
+isset($_POST['re_enter'])
+)
+{
+    $old = $_POST['old'];
+    $new = $_POST['new'];
+    $re_enter = $_POST['re_enter'];
+
+    if(!$conn)
+    {
+        $conn = database::getConnection();
+    }
+        $sql = "SELECT * FROM `login` WHERE `username` = '$userobj->username'";
+        $result = $conn->query($sql);
+        if($result)
+        {
+            $data = $result->fetch_assoc();
+            if(password_verify($old, $data['password']) == true)
+            {
+                if($new == $re_enter)
+                {
+                    $newpass = password_hash($new, PASSWORD_BCRYPT);
+                    $sql1 = "UPDATE `login` SET 
+                        `password` = '$newpass'
+                        WHERE `username` = '$userobj->username'";
+                        $pass_success = $conn->query($sql1);
+                        if($pass_success)
+                        {
+                            ?><script>alert('New password has been updated!')</script><?
+                            $session_clear = "DELETE FROM `sessions` WHERE `username` = '$userobj->username'";
+                            $conn->query($session_clear);
+                            session_destroy();
+                        }
+                        else
+                        {
+                            ?><script>alert('Please try after some time!')</script><?
+                        }
+                }
+                else{
+                    ?><script>alert('New password and re-entered password does not match!')</script><?
+                }
+            }
+            else
+            {
+                ?><script>alert('Old Password does not match!')</script><?
+            }
+        }
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -27,15 +76,13 @@ if(isset($_GET['logout']))
 
 <head>
 
-
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dashboard</title>
+    <title>Change Password</title>
 
     <!-- Custom fonts for this template-->
     <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -53,7 +100,7 @@ if(isset($_GET['logout']))
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-     <!-- Sidebar -->
+        <!-- Sidebar -->
   <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
 <!-- Sidebar - Brand -->
@@ -205,71 +252,49 @@ aria-hidden="true">
 </div>
 
                 <!-- Begin Page Content -->
-                <div class="container-fluid">
 
-                    <!-- Content Row -->
-                    <div class="row">
-
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                               No. of People Signed up</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?echo user::no_of_users()?></div>
-                                        </div>
-                                        <div class="col-auto">
-                                    
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Content Row -->
-
-                    <div class="row">
-
-                        <!-- Area Chart -->
-                        <div class="col-xl-8 col-lg-7">
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Your Personal Information</h6>
-                                </div>
-                                <!-- Card Body -->
-                                <h4 class="m-4 font-weight-bold text-primary">Name: <?echo $userobj->name?></h4> 
-                                <h4 class="m-4 font-weight-bold text-primary">Userame: <?echo $userobj->username?></h4>
-                                <h4 class="m-4 font-weight-bold text-primary">Age: <?echo $userobj->age?></h4>
-                                <h4 class="m-4 font-weight-bold text-primary">Gender: <?echo $userobj->gender?></h4>
-                                <h4 class="m-4 font-weight-bold text-primary">Date of Birth: <?echo $userobj->dob?></h4>
-                                <h4 class="m-4 font-weight-bold text-primary">Email: <?echo $userobj->email?></h4>
-                                <h4 class="m-4 font-weight-bold text-primary">Phone: <?echo $userobj->phone?></h4>
-                                <h4 class="m-4 font-weight-bold text-primary">Reg.ID: <?echo $userobj->reg_id?></h4>
-                                
-                                </div>
-                            </div>
-                        </div>
-
-                    
-                   
-
-
-                </div>
-                <!-- /.container-fluid -->
-
-            </div>
-            <!-- End of Main Content -->
-        <?load_template('footer')?>
-
+<!-- Area Chart -->
+<div class="col-xl-8 col-lg-7">
+    <div class="card shadow mb-4">
+        <!-- Card Header - Dropdown -->
+        <div
+            class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Change Password</h6>
         </div>
-        <!-- End of Content Wrapper -->
-
+        <!-- Card Body -->
+        <form method="post">
+        <div class="form-group m-4">
+        <h4 class="text-primary">Old Password</h4>
+            <input type="password" name="old" class="form-control form-control-user"
+             id="exampleInputEmail" aria-describedby="emailHelp"
+            placeholder="Old Password">
     </div>
+
+    <div class="form-group m-4">
+        <h4 class="text-primary">New Password</h4>
+            <input type="password" name="new" class="form-control form-control-user"
+             id="exampleInputEmail" aria-describedby="emailHelp"
+            placeholder="New Password">
+    </div>
+      
+    <div class="form-group m-4">
+        <h4 class="text-primary">Re-enter Password</h4>
+            <input type="password" name="re_enter" class="form-control form-control-user"
+             id="exampleInputEmail" aria-describedby="emailHelp"
+            placeholder="Re-enter Password">
+</div>
+    <div class="form-group m-4">
+    <button type="submit" class="text-center col-lg-4 btn btn-primary">Change Password</button>
+    </div>
+        
+        </div>
+
+
+            <!-- End of Main Content -->
+
+    <?load_template('footer')?>
+
+   
     <!-- End of Page Wrapper -->
 
     <!-- Scroll to Top Button-->
@@ -286,14 +311,7 @@ aria-hidden="true">
     <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="/js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="/vendor/chart.js/Chart.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="/js/demo/chart-area-demo.js"></script>
-    <script src="/js/demo/chart-pie-demo.js"></script>
+    <script src="js/sb-admin-2.min.js"></script>
 
 </body>
 

@@ -109,12 +109,9 @@ if(session::get('session_token'))
     <script>
 
     $(document).ready(function() {
-  // Intercept the form submission event
   $('#myForm').submit(function(event) {
-    // Prevent the default form submission
     event.preventDefault();
 
-    // Get the form values
     var name = $('#formName').val();
     var username = $('#formUsername').val();
     var age = $('#formAge').val();
@@ -122,9 +119,8 @@ if(session::get('session_token'))
     var dob = $('#formDob').val();
     var email = $('#formEmail').val();
     var phone = $('#formPhone').val();
-    var password = $('formPassword').val();
+    var password = $('#formPassword').val();
 
-    // Data object to send in the request
     var dataToSend = {
       name: name,
       username: username,
@@ -136,21 +132,27 @@ if(session::get('session_token'))
       password: password
     };
 
-    // Send the AJAX request
     $.ajax({
       type: 'POST',
-      url: 'https://project-sample.umarfarooq.online/api/signup.php',
+      url: 'https://project-sample.umarfarooq.online/api/signup.api.php',
+      dataType: 'json',
       data: dataToSend,
       
       success: function(response) {
-        output = JSON.stringify(response)
-        console.log('Response:', output);
-        alert(output)     
+        if(response.status == 'success')
+        {
+            alert('Signup Success!')
+        }
+        else{
+            alert('Signup Failed!')
+        }
     },
       error: function(xhr, status, error) {
-        // Handle errors
-        err = JSON.stringify(error)
-        alert('Error:', status);
+        if(xhr.status == 500)
+        {
+            alert("Username, email or phone already registered. Please use different data.")
+        }
+       
       }
     });
   });

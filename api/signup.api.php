@@ -11,23 +11,23 @@ header('Content-Type: application/json');
     $dob = $_POST['dob'];
     $email = $_POST['email'];
     $phone = $_POST['phone'];
-    $password = $_POST['password'];
+    $pass = $_POST['password'];
     $regid = rand(0000,9999);
 
-    $result = user::signup($name, $username, $age, $gender, $dob, $email, $phone, $password, $regid);
+    $result = user::signup($name, $username, $age, $gender, $dob, $email, $phone, $pass, $regid);
 
-    if($result === true)
+    if($result)
     {
-            $data = array(
-                "status" => "Signup Success!"
+            $success = array(
+                "status" => "success"
             );
-            $json = json_encode($data);
-            return $json;
+            $jsonSuccess = json_encode($success);
+            echo $jsonSuccess;
     }
     else{
         $data = array(
             "status" => "Signup Failed!"
         );
         $json = json_encode($data);
-        return $json;
+        echo $json;
     }

@@ -132,7 +132,7 @@ class user
         {
             $conn = database::getConnection();
         }
-        $sql = "UPDATE `users` SET
+        $sql1 = "UPDATE `users` SET
          `name` = '$name',
          `username` = '$username',
          `age` = '$age',
@@ -141,9 +141,13 @@ class user
            `email` = '$email',
             `phone` = '$phone'
           WHERE `id` = '$this->id'";
+
+          $sql2 = "UPDATE `login` SET 
+            `name` = '$name',
+            `username` = '$username'
+            WHERE `id` = '$this->id'";
         
-        $result = $conn->query($sql);
-        if($result == true)
+        if($conn->query($sql1) && $conn->query($sql2) == true)
         {
             return true;
         }
@@ -153,6 +157,36 @@ class user
         }
 
     }
+
+    public function changePassword($old, $new, $re_enter)
+    {
+        if(!$conn)
+        {
+            $conn = database::getConnection();
+        }
+            $sql = "SELECT `password` FROM `login` WHERE `username` = '$this->username'";
+            $result = $conn->query($sql);
+            if($result)
+            {
+                $data = $result->fetch_assoc();
+                if($data['password'] == $old)
+                {
+                    if($new == $re_enter)
+                    {
+                        $sql1 = "UPDATE `login` SET 
+                            `password` = '$new'
+                            WHERE `username` = '$this->username'";
+                    }
+                    else{
+                        ?><script>alert('New password and re-entered password does not match!')</script><?
+                    }
+                }
+                else
+                {
+                    ?><script>alert('Old Password does not match!')</script><?
+                }
+            }
+        }
 
 
 }
