@@ -6,7 +6,7 @@ if(session::get('session_token'))
 
 ?>
 <!DOCTYPE html>
-
+<title>Loading...</title>
 <link href="/assets/img/favicon3.png" rel="icon">
   <link href="/assets/img/favicon3.png" rel="apple-touch-icon">
   <!-- Google Fonts -->
