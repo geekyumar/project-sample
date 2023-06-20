@@ -1,2 +1,5 @@
 <?php
-print_r($_SESSION);
+        {
+            "status":"200 OK",
+             "process":"success"
+            };

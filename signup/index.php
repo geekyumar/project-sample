@@ -2,38 +2,6 @@
 
 include_once $_SERVER['DOCUMENT_ROOT'].'/__lib/main.php';
 
-if(isset($_POST['name']) and
-isset($_POST['username']) and
-isset($_POST['age']) and
-isset($_POST['gender']) and
-isset($_POST['dob']) and
-isset($_POST['email']) and
-isset($_POST['phone']) and
-isset($_POST['password'])
-     )
-{
-
-    $name = $_POST['name'];
-    $username = $_POST['username'];
-    $age = $_POST['age'];
-    $gender = $_POST['gender'];
-    $dob = $_POST['dob'];
-    $email = $_POST['email'];
-    $phone = $_POST['phone'];
-    $password = $_POST['password'];
-    $regid = rand(0000,9999);
-
-    $result = user::signup($name, $username, $age, $gender, $dob, $email, $phone, $password, $regid);
-
-    if($result)
-    {
-        ?><script>alert('You have been successfully signed up!')</script><?
-    }
-    else{
-        ?><script>alert('Signup failed! Please try again!')</script><?
-    }
-}
-
 if(session::get('session_token'))
 {
     header('Location: /load_dashboard');
@@ -61,6 +29,8 @@ if(session::get('session_token'))
 
     <!-- Custom styles for this template-->
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 </head>
 
@@ -80,48 +50,43 @@ if(session::get('session_token'))
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                             </div>
-                            <form class="user" method="post">
+                            <form id="myForm" class="user" method="post">
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="text" name="name" class="form-control form-control-user" id="exampleFirstName"
+                                        <input type="text" name="name" class="form-control form-control-user" id="formName"
                                             placeholder="Name">
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="text"  name="username" class="form-control form-control-user" id="exampleLastName"
+                                        <input type="text"  name="username" class="form-control form-control-user" id="formUsername"
                                             placeholder="Username">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="number"  name="age" class="form-control form-control-user" id="exampleFirstName"
+                                        <input type="number"  name="age" class="form-control form-control-user" id="formAge"
                                             placeholder="Age">
                                     </div>
                                     <div class="col-sm-6">
-                                        <select type="text" name="gender" class="form-control form-control-user" id="exampleLastName"
+                                    <input type="text"  name="gender" class="form-control form-control-user" id="formGender"
                                             placeholder="Gender">
-                                            <option disabled selected>Select Gender</option>
-                                                <option value="male">Male</option>
-                                                <option value="female">Female</option>
-                                                <option value="not-to-say">Prefer not to say</option>
-                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="date" name="dob" class="form-control form-control-user" id="exampleInputEmail"
+                                    <input type="date" name="dob" class="form-control form-control-user" id="formDob"
                                         placeholder="Date of Birth">
                                 </div>
                                 <div class="form-group">
-                                    <input type="email" name="email" class="form-control form-control-user" id="exampleInputEmail"
+                                    <input type="email" name="email" class="form-control form-control-user" id="formEmail"
                                         placeholder="Email Address">
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="number" name="phone"  class="form-control form-control-user"
-                                            id="exampleInputPassword" placeholder="Phone">
+                                            id="formPhone" placeholder="Phone">
                                     </div>
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="password" name="password"  class="form-control form-control-user"
-                                            id="exampleInputPassword" placeholder="Password">
+                                            id="formPassword" placeholder="Password">
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-user btn-block">
@@ -140,6 +105,59 @@ if(session::get('session_token'))
         </div>
 
     </div>
+
+    <script>
+
+    $(document).ready(function() {
+  // Intercept the form submission event
+  $('#myForm').submit(function(event) {
+    // Prevent the default form submission
+    event.preventDefault();
+
+    // Get the form values
+    var name = $('#formName').val();
+    var username = $('#formUsername').val();
+    var age = $('#formAge').val();
+    var gender = $('#formGender').val();
+    var dob = $('#formDob').val();
+    var email = $('#formEmail').val();
+    var phone = $('#formPhone').val();
+    var password = $('formPassword').val();
+
+    // Data object to send in the request
+    var dataToSend = {
+      name: name,
+      username: username,
+      age: age,
+      gender: gender,
+      dob: dob,
+      email: email,
+      phone: phone,
+      password: password
+    };
+
+    // Send the AJAX request
+    $.ajax({
+      type: 'POST',
+      url: 'https://project-sample.umarfarooq.online/api/signup.php',
+      data: dataToSend,
+      
+      success: function(response) {
+        output = JSON.stringify(response)
+        console.log('Response:', output);
+        alert(output)     
+    },
+      error: function(xhr, status, error) {
+        // Handle errors
+        err = JSON.stringify(error)
+        alert('Error:', status);
+      }
+    });
+  });
+});
+
+</script>
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="/vendor/jquery/jquery.min.js"></script>
